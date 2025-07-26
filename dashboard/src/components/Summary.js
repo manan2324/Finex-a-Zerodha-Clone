@@ -9,7 +9,7 @@ const Summary = () => {
     const userId = localStorage.getItem("userId");
     if (!userId) return
 
-    axios.get(`https://finex-backend.onrender.com/holdings/userHoldings/${userId}`).then((res) => {
+    axios.get(`https://finex-backend-h41g.onrender.com/holdings/userHoldings/${userId}`).then((res) => {
       setAllHoldings(res.data);
     });
   }, []);

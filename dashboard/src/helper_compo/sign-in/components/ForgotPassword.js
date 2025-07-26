@@ -37,7 +37,7 @@ function ForgotPassword({ open, handleClose }) {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("https://finex-backend.onrender.com/forgot-password", { email });
+      await axios.post("https://finex-backend-h41g.onrender.com/forgot-password", { email });
       setStep(2);
       setMessage("Code sent to your email.");
     } catch (err) {
@@ -50,7 +50,7 @@ function ForgotPassword({ open, handleClose }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await axios.post("https://finex-backend.onrender.com/verify-code", { email, code });
+      const { data } = await axios.post("https://finex-backend-h41g.onrender.com/verify-code", { email, code });
       setStep(3);
       setCode('');
       setMessage(data.message || "Code verified successfully.");
@@ -64,7 +64,7 @@ function ForgotPassword({ open, handleClose }) {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("https://finex-backend.onrender.com/reset-password", { email, newPassword });
+      await axios.post("https://finex-backend-h41g.onrender.com/reset-password", { email, newPassword });
       setMessage("Password reset successful.");
       setTimeout(() => {
         setStep(1);

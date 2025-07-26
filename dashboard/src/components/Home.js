@@ -44,7 +44,7 @@ const Home = () => {
         return;
       }
       const { data } = await axios.post(
-        "https://finex-backend.onrender.com/",
+        "https://finex-backend-h41g.onrender.com/",
         {},
         { withCredentials: true }
       );

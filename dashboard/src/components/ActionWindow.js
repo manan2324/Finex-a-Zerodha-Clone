@@ -17,7 +17,7 @@ const ActionWindow = () => {
     const userId = localStorage.getItem("userId");
 
     try {
-      await axios.post("https://finex-backend.onrender.com/orders/newOrder", {
+      await axios.post("https://finex-backend-h41g.onrender.com/orders/newOrder", {
         userId: userId,
         name: uid,
         qty: quantity,
