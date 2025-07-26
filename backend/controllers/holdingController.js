@@ -1,5 +1,5 @@
 const Holding = require("../models/HoldingsModel");
-const User = require("../Models/UsersModel");
+const User = require("../models/UsersModel");
 
 module.exports.allHoldings = async (req, res) => {
     try {

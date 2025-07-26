@@ -1,5 +1,5 @@
 const Order = require("../models/OrdersModel");
-const User = require("../Models/UsersModel");
+const User = require("../models/UsersModel");
 const Holding = require("../models/HoldingsModel");
 
 module.exports.newOrder = async (req, res) => {

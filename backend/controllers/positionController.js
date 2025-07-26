@@ -1,4 +1,4 @@
-    const Position = require("../models/PositionsModel");
+const Position = require("../models/PositionsModel");
 
 module.exports.allPositions = async (req, res) => {
     try {
