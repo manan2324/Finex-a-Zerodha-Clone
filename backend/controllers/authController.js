@@ -13,7 +13,9 @@ module.exports.Signup = async (req, res, next) => {
     const token = createSecretToken(user._id);
     res.cookie("token", token, {
       withCredentials: true,
-      httpOnly: false,
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
     });
     res
       .status(201)
@@ -30,7 +32,7 @@ module.exports.Login = async (req, res, next) => {
     if (!email || !password) {
       return res.json({ message: 'All fields are required' })
     }
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
     if (!user) {
       return res.json({ message: 'Incorrect password or email' })
     }
@@ -41,7 +43,9 @@ module.exports.Login = async (req, res, next) => {
     const token = createSecretToken(user._id);
     res.cookie("token", token, {
       withCredentials: true,
-      httpOnly: false,
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
     });
     res
       .status(201)

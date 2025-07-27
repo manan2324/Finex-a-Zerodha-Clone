@@ -39,28 +39,29 @@ const Home = () => {
 
   useEffect(() => {
     const verifyCookie = async () => {
-      if (!cookies.token) {
-        navigate("/login");
-        return;
-      }
-      const { data } = await axios.post(
-        "https://finex-backend-h41g.onrender.com/",
-        {},
-        { withCredentials: true }
-      );
-      const { status, user } = data;
-      setUsername(user);
+      try {
+        const { data } = await axios.post(
+          "https://finex-backend-h41g.onrender.com/",
+          {},
+          { withCredentials: true }
+        );
 
-      if (status) {
-        if (location.state?.justLoggedIn) {
-          toast(`Hello ${user}`, {
-            position: "top-right",
-          });
+        const { status, user } = data;
+        if (!status) {
+          removeCookie("token");
+          navigate("/login");
+        } else {
+          setUsername(user);
 
-          navigate(location.pathname, { replace: true });
+          if (location.state?.justLoggedIn) {
+            toast(`Hello ${user}`, {
+              position: "top-right",
+            });
+            navigate(location.pathname, { replace: true });
+          }
         }
-      } else {
-        removeCookie("token");
+      } catch (err) {
+        console.log("Verification failed:", err);
         navigate("/login");
       }
     };
@@ -82,7 +83,7 @@ const Home = () => {
           <WatchList />
         </aside>
         <main className="main-content">
-          <TopBar logOutFn={Logout}/>
+          <TopBar logOutFn={Logout} />
           <div className="content-area">
             <Routes>
               <Route path="/" element={<Dashboard />} />
