@@ -147,14 +147,13 @@ export default function SignIn(props) {
       if (success) {
         localStorage.setItem("userId", user._id);
         handleSuccess(message);
-        navigate("/", { state: { justLoggedIn: true } });
-        console.log("Login successfully");
+        navigate("/", { replace: true ,state: { justLoggedIn: true } });
       } else {
         handleError(message);
       }
     } catch (error) {
       console.log("Login error: ", error);
-      handleError("Login failed");
+      handleError("Login failed. Please try again.");
     }
     setInputValue({
       ...inputValue,

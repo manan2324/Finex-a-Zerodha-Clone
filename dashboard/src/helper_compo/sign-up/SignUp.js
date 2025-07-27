@@ -142,8 +142,7 @@ export default function SignUp(props) {
       if (success) {
         localStorage.setItem("userId", user._id);
         handleSuccess(message);
-        navigate("/");
-        console.log("Signup successfully");
+        navigate("/", { replace: true });
       } else {
         handleError(message);
       }
