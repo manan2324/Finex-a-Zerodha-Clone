@@ -14,8 +14,8 @@ const Dashboard = () => {
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (!userId) return;
-    
-    axios.get(`https://finex-backend-h41g.onrender.com/holdings/userHoldings/${userId}`).then((res) => {
+
+    axios.get(`http://localhost:3002/holdings/userHoldings/${userId}`).then((res) => {
       setHoldings(res.data);
     });
   }, []);

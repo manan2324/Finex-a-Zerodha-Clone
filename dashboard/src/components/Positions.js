@@ -6,7 +6,7 @@ const Positions = () => {
   const [allPostions, setAllPostions] = useState([]);
 
   useEffect(() => {
-    axios.get("https://finex-backend-h41g.onrender.com/positions/allPositions").then((res) => {
+    axios.get("http://localhost:3002/positions/allPositions").then((res) => {
       setAllPostions(res.data);
     });
   }, []);

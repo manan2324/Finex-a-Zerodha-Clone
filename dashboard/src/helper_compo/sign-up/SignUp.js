@@ -131,7 +131,7 @@ export default function SignUp(props) {
 
     try {
       const { data } = await axios.post(
-        "https://finex-backend-h41g.onrender.com/signup",
+        "http://localhost:3002/signup",
         {
           ...inputValue,
           createdAt: new Date(),

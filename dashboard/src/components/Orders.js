@@ -13,7 +13,7 @@ const Orders = () => {
     if (!userId) return;
 
     axios
-      .get(`https://finex-backend-h41g.onrender.com/orders/allOrders/${userId}`)
+      .get(`http://localhost:3002/orders/allOrders/${userId}`)
       .then((res) => {
         setOrders(res.data);
         setLoading(false);
@@ -28,7 +28,7 @@ const Orders = () => {
     const userId = localStorage.getItem("userId");
     if (!userId) return;
     try {
-      await axios.delete(`https://finex-backend-h41g.onrender.com/orders/allOrders/${userId}`);
+      await axios.delete(`http://localhost:3002/orders/allOrders/${userId}`);
       setOrders([]);
     } catch (err) {
       console.error("Failed to delete order history:", err);

@@ -41,7 +41,7 @@ const Home = () => {
     const verifyCookie = async () => {
       try {
         const { data } = await axios.post(
-          "https://finex-backend-h41g.onrender.com/",
+          "http://localhost:3002/",
           {},
           { withCredentials: true }
         );
