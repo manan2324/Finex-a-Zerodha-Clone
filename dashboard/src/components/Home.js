@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
-import { Cookies, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Dashboard from "./Dashboard";
