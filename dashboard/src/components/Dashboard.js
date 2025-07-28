@@ -15,7 +15,7 @@ const Dashboard = () => {
     const userId = localStorage.getItem("userId");
     if (!userId) return;
 
-    axios.get(`http://localhost:3002/holdings/userHoldings/${userId}`).then((res) => {
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/holdings/userHoldings/${userId}`).then((res) => {
       setHoldings(res.data);
     });
   }, []);

@@ -9,7 +9,7 @@ const Holdings = () => {
     const userId = localStorage.getItem("userId");
     if (!userId) return;
     // Fetch common holdings for all users
-    axios.get(`http://localhost:3002/holdings/userHoldings/${userId}`).then((res) => {
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/holdings/userHoldings/${userId}`).then((res) => {
       setAllHoldings(res.data);
     });
   }, []);

@@ -37,7 +37,7 @@ function ForgotPassword({ open, handleClose }) {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("http://localhost:3002/forgot-password", { email });
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/forgot-password`, { email });
       setStep(2);
       setMessage("Code sent to your email.");
     } catch (err) {
@@ -50,7 +50,7 @@ function ForgotPassword({ open, handleClose }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await axios.post("http://localhost:3002/verify-code", { email, code });
+      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/verify-code`, { email, code });
       setStep(3);
       setCode('');
       setMessage(data.message || "Code verified successfully.");
@@ -64,7 +64,7 @@ function ForgotPassword({ open, handleClose }) {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("http://localhost:3002/reset-password", { email, newPassword });
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/reset-password`, { email, newPassword });
       setMessage("Password reset successful.");
       setTimeout(() => {
         setStep(1);

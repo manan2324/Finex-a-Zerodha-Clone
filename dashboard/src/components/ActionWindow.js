@@ -17,7 +17,7 @@ const ActionWindow = () => {
     const userId = localStorage.getItem("userId");
 
     try {
-      await axios.post("http://localhost:3002/orders/newOrder", {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/orders/newOrder`, {
         userId: userId,
         name: uid,
         qty: quantity,

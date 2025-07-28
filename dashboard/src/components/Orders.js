@@ -13,7 +13,7 @@ const Orders = () => {
     if (!userId) return;
 
     axios
-      .get(`http://localhost:3002/orders/allOrders/${userId}`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/orders/allOrders/${userId}`)
       .then((res) => {
         setOrders(res.data);
         setLoading(false);
@@ -28,7 +28,7 @@ const Orders = () => {
     const userId = localStorage.getItem("userId");
     if (!userId) return;
     try {
-      await axios.delete(`http://localhost:3002/orders/allOrders/${userId}`);
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/orders/allOrders/${userId}`);
       setOrders([]);
     } catch (err) {
       console.error("Failed to delete order history:", err);

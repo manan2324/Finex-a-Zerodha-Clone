@@ -39,9 +39,13 @@ const Home = () => {
 
   useEffect(() => {
     const verifyCookie = async () => {
+      if (!cookies.token) {
+        navigate("/login");
+        return;
+      }
       try {
         const { data } = await axios.post(
-          "http://localhost:3002/",
+          `${process.env.REACT_APP_BACKEND_URL}/`,
           {},
           { withCredentials: true }
         );
@@ -57,7 +61,8 @@ const Home = () => {
             toast(`Hello ${user}`, {
               position: "top-right",
             });
-            navigate(location.pathname, { replace: true });
+            // Remove the justLoggedIn flag after showing the toast
+            navigate(location.pathname, { replace: true, state: {} });
           }
         }
       } catch (err) {
@@ -66,7 +71,8 @@ const Home = () => {
       }
     };
     verifyCookie();
-  }, [cookies, navigate, removeCookie]);
+  }, [cookies, navigate, removeCookie, location.state]);
+  
   const Logout = () => {
     removeCookie("token");
     localStorage.removeItem("userId");
