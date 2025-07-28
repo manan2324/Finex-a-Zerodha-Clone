@@ -1,7 +1,6 @@
 import React from "react";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Dashboard from "./Dashboard";
@@ -14,6 +13,9 @@ import { GeneralContext } from "./GeneralContext";
 
 const Home = () => {
   const { isSidebarOpen, toggleSidebar } = useContext(GeneralContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [username, setUsername] = useState("");
 
   // This effect adds a listener to close the sidebar when clicking outside of it on mobile
   useEffect(() => {
@@ -32,17 +34,9 @@ const Home = () => {
     };
   }, [isSidebarOpen, toggleSidebar]);
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [cookies, removeCookie] = useCookies([]);
-  const [username, setUsername] = useState("");
 
   useEffect(() => {
-    const verifyCookie = async () => {
-      if (!cookies.token) {
-        navigate("/login");
-        return;
-      }
+    const verifySession = async () => {
       try {
         const { data } = await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/`,
@@ -52,7 +46,6 @@ const Home = () => {
 
         const { status, user } = data;
         if (!status) {
-          removeCookie("token");
           navigate("/login");
         } else {
           setUsername(user);
@@ -70,16 +63,23 @@ const Home = () => {
         navigate("/login");
       }
     };
-    verifyCookie();
-  }, [cookies, navigate, removeCookie, location.state]);
-  
-  const Logout = () => {
-    removeCookie("token");
-    localStorage.removeItem("userId");
-    toast.success("Logout successfully", {
-      position: "top-right"
-    });
-    navigate("/login");
+    verifySession();
+  }, [navigate, location.state]);
+
+  const Logout = async () => {
+    try {
+      await axios.get(`${process.env.REACT_APP_BACKEND_URL}/logout`, {
+        withCredentials: true,
+      });
+      localStorage.removeItem("userId");
+      toast.success("Logout successfully", {
+        position: "top-right"
+      });
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout error:", err);
+      toast.error("Logout failed");
+    }
   };
 
   return (

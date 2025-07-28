@@ -1,6 +1,5 @@
 const User = require("../models/UsersModel");
 const nodemailer = require("nodemailer");
-const bcrypt = require("bcryptjs");
 
 module.exports.forgotPassword = async (req, res) => {
     const { email } = req.body;
@@ -87,7 +86,7 @@ module.exports.resetPassword = async (req, res) => {
         const user = await User.findOne({ email });
         if (!user) return res.status(404).json({ message: "User not found" });
 
-        user.password = await bcrypt.hash(newPassword, 12);
+        await user.setPassword(newPassword);
         user.resetCode = undefined;
         user.resetCodeExpiry = undefined;
         await user.save();

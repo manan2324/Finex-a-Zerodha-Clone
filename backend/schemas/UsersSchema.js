@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const passportLocalMongoose = require("passport-local-mongoose");
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -35,8 +35,15 @@ const userSchema = new mongoose.Schema({
     resetCodeExpiry: Date,
 });
 
-userSchema.pre("save", async function () {
-    this.password = bcrypt.hash(this.password, 12);
-});
+userSchema.plugin(passportLocalMongoose, {
+    usernameField: "email",
+    hashField: "password",
+    errorMessages: {
+        UserExistsError: "A user with the given email is already registered.",
+        IncorrectPasswordError: "The password you entered is incorrect.",
+        MissingUsernameError: "Please enter your email address.",
+        MissingPasswordError: "Please enter your password.",
+    }
+})
 
 module.exports = userSchema;

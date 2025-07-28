@@ -1,55 +1,55 @@
 const User = require("../models/UsersModel");
-const { createSecretToken } = require("../util/secretToken");
-const bcrypt = require("bcryptjs");
+const passport = require("passport");
 
 module.exports.Signup = async (req, res, next) => {
+  const { email, password, username, createdAt } = req.body;
+
   try {
-    const { email, password, username, createdAt } = req.body;
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.json({ message: "User already exists" });
-    }
-    const user = await User.create({ email, password, username, createdAt });
-    const token = createSecretToken(user._id);
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
+    const newUser = new User({ email, username, createdAt });
+
+    User.register(newUser, password, (err, user) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+
+      req.login(user, (err) => {
+        if (err) return next(err);
+        return res.status(201).json({
+          success: true,
+          message: "User registered and logged in successfully",
+          user: { email: user.email, username: user.username },
+        });
+      });
     });
-    res
-      .status(201)
-      .json({ message: "User signed in successfully", success: true, user });
-    next();
+
   } catch (error) {
     console.error(error);
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 module.exports.Login = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.json({ message: 'All fields are required' })
-    }
-    const user = await User.findOne({ email });
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
     if (!user) {
-      return res.json({ message: 'Incorrect password or email' })
+      return res.status(400).json({ success: false, message: "Invalid credentials" });
     }
-    const auth = await bcrypt.compare(password, user.password);
-    if (!auth) {
-      return res.json({ message: 'Incorrect password or email' })
-    }
-    const token = createSecretToken(user._id);
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
+
+    req.login(user, (err) => {
+      if (err) return next(err);
+      return res.status(200).json({
+        success: true,
+        message: "User logged in successfully",
+        user: { email: user.email, username: user.username },
+      });
     });
-    res
-      .status(201)
-      .json({ message: "User logged in successfully", success: true, user });
-    next();
-  } catch (error) {
-    console.error(error);
-  }
+  })(req, res, next);
+}
+
+module.exports.Logout = async (req, res) => {
+  req.logout(err => {
+    if (err) return res.status(500).json({ message: "Error logging out" });
+    res.clearCookie("connect.sid");
+    res.status(200).json({ success: true, message: "Logged out successfully" });
+  })
 }

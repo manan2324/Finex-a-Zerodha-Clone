@@ -5,6 +5,9 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const passport = require("passport");
+const MongoStore = require("connect-mongo");
 
 const authRoute = require("./routes/authRoute");
 const orderRoute = require("./routes/orderRoute");
@@ -12,23 +15,54 @@ const holdingRoute = require("./routes/holdingRoute");
 const positionRoute = require("./routes/positionRoute");
 const passwordResetRoute = require("./routes/passwordResetRoute");
 
+const User = require("./models/UsersModel");
+
 const PORT = process.env.PORT || 3002;
 const MONGO_URL = process.env.MONGO_URL;
+const CLIENT_URL = process.env.CLIENT_URL;
 
 const app = express();
 
 app.use(cors(
     {
-        origin: [process.env.CLIENT_URL],
+        origin: [CLIENT_URL],
         methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true,
     }
 ));
 
+//Middlewares
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+//session middlewares
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({
+            mongoUrl: MONGO_URL,
+            collectionName: "sessions"
+        }),
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 3, //3 days
+            httpOnly: true,
+            secure: false,
+            sameSite: "none"
+        }
+    })
+);
+
+//passport config
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+//routes
 app.use("/", authRoute);
 app.use("/orders", orderRoute);
 app.use("/holdings", holdingRoute);
@@ -40,14 +74,15 @@ app.get("/", (req, res) => {
 });
 
 async function main() {
-    mongoose
-        .connect(MONGO_URL, {
+    mongoose.connect(MONGO_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })
-        .then(() => console.log("MongoDB is  connected successfully"))
-        .catch((err) => console.error(err));
 }
+
+main()
+    .then(() => console.log("MongoDB is  connected successfully"))
+    .catch((err) => console.error(err));
 
 main()
 

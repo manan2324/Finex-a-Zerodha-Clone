@@ -25,53 +25,54 @@ function ForgotPassword({ open, handleClose }) {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  const handleMouseDownPassword = (event) => event.preventDefault();
+  const handleMouseUpPassword = (event) => event.preventDefault();
 
-  const handleMouseUpPassword = (event) => {
-    event.preventDefault();
-  };
+  const handleSendCode = async () => {
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      setMessage("Please enter a valid email.");
+      return;
+    }
 
-  const handleSendCode = async (e) => {
-    e.preventDefault();
     setLoading(true);
     try {
       await axios.post(`${process.env.REACT_APP_BACKEND_URL}/forgot-password`, { email });
-      setStep(2);
       setMessage("Code sent to your email.");
+      setStep(2);
     } catch (err) {
       setMessage(err.response?.data?.message || "Error sending code.");
     }
     setLoading(false);
   };
 
-  const handleVerifyCode = async (e) => {
-    e.preventDefault();
+  const handleVerifyCode = async () => {
+    if (!code || code.length !== 4) {
+      setMessage("Please enter a 4-digit code.");
+      return;
+    }
+
     setLoading(true);
     try {
       const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/verify-code`, { email, code });
-      setStep(3);
-      setCode('');
       setMessage(data.message || "Code verified successfully.");
+      setStep(3);
     } catch (err) {
-      setMessage(err.response?.data?.message || "Error verifying code.");
+      setMessage(err.response?.data?.message || "Invalid or expired code.");
     }
     setLoading(false);
   };
 
   const handleResetPassword = async (e) => {
-    e.preventDefault();
+    if (!newPassword || newPassword.length < 6) {
+      setMessage("Password must be at least 6 characters.");
+      return;
+    }
+
     setLoading(true);
     try {
       await axios.post(`${process.env.REACT_APP_BACKEND_URL}/reset-password`, { email, newPassword });
       setMessage("Password reset successful.");
       setTimeout(() => {
-        setStep(1);
-        setEmail('');
-        setCode('');
-        setNewPassword('');
-        setMessage('');
         handleClose();
       }, 1500);
     } catch (err) {
@@ -93,29 +94,26 @@ function ForgotPassword({ open, handleClose }) {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Reset password</DialogTitle>
+      <DialogTitle>Reset Password</DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
         {step === 1 && (
           <>
             <DialogContentText>
-              Enter your account&apos;s email address, and we&apos;ll send you a 4-digit code to reset your password.
+              Enter your registered email. We'll send a 4-digit code to reset your password.
             </DialogContentText>
             <OutlinedInput
               autoFocus
               required
-              margin="dense"
               id="email"
-              name="email"
-              label="Email address"
-              placeholder="Email address"
               type="email"
+              placeholder="Email address"
               fullWidth
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
-            {message && <span style={{ color: "red" }}>{message}</span>}
           </>
         )}
+
         {step === 2 && (
           <>
             <DialogContentText>
@@ -124,19 +122,16 @@ function ForgotPassword({ open, handleClose }) {
             <OutlinedInput
               autoFocus
               required
-              margin="dense"
               id="code"
-              name="code"
-              label="Code"
-              placeholder="4-digit code"
               type="text"
+              placeholder="4-digit code"
               fullWidth
               value={code}
               onChange={e => setCode(e.target.value)}
             />
-            {message && <span style={{ color: "red" }}>{message}</span>}
           </>
         )}
+
         {step === 3 && (
           <>
             <DialogContentText>
@@ -145,11 +140,8 @@ function ForgotPassword({ open, handleClose }) {
             <OutlinedInput
               autoFocus
               required
-              margin="dense"
               id="newPassword"
-              name="newPassword"
-              label="New Password"
-              placeholder="New Password"
+              placeholder="New password"
               type={showPassword ? 'text' : 'password'}
               fullWidth
               value={newPassword}
@@ -157,9 +149,6 @@ function ForgotPassword({ open, handleClose }) {
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
-                    aria-label={
-                      showPassword ? 'hide the password' : 'display the password'
-                    }
                     onClick={handleClickShowPassword}
                     onMouseDown={handleMouseDownPassword}
                     onMouseUp={handleMouseUpPassword}
@@ -170,28 +159,35 @@ function ForgotPassword({ open, handleClose }) {
                 </InputAdornment>
               }
             />
-            {message && <span style={{ color: "green" }}>{message}</span>}
           </>
         )}
+
+        {message && (
+          <span style={{ color: step === 3 ? "green" : "red", marginTop: 8 }}>
+            {message}
+          </span>
+        )}
       </DialogContent>
+
       <DialogActions sx={{ pb: 3, px: 3 }}>
         <Button onClick={handleClose}>Cancel</Button>
+
         {step === 1 && (
-          <Button color='primary' variant="contained" type="submit" onClick={handleSendCode}>
+          <Button variant="contained" onClick={handleSendCode} disabled={loading}>
             Send Code
-            {loading && <CircularProgress size={24} color='inherit' sx={{ ml: 1 }} />}
+            {loading && <CircularProgress size={20} sx={{ ml: 1 }} />}
           </Button>
         )}
         {step === 2 && (
-          <Button variant="contained" type="submit" onClick={handleVerifyCode}>
-            Verify Code
-            {loading && <CircularProgress size={24} color='inherit' sx={{ ml: 1 }} />}
+          <Button variant="contained" onClick={handleVerifyCode} disabled={loading}>
+            Verify
+            {loading && <CircularProgress size={20} sx={{ ml: 1 }} />}
           </Button>
         )}
         {step === 3 && (
-          <Button variant="contained" type="submit" onClick={handleResetPassword}>
-            Reset Password
-            {loading && <CircularProgress size={24} color='inherit' sx={{ ml: 1 }} />}
+          <Button variant="contained" onClick={handleResetPassword} disabled={loading}>
+            Reset
+            {loading && <CircularProgress size={20} sx={{ ml: 1 }} />}
           </Button>
         )}
       </DialogActions>

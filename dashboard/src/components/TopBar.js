@@ -8,7 +8,7 @@ const TopBar = ({ logOutFn }) => {
   const { toggleSidebar } = useContext(GeneralContext);
   const location = useLocation();
   const pathname = location.pathname;
-
+  
   return (
     <div className="topbar">
       <div className="topbar-left">
