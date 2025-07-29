@@ -23,6 +23,8 @@ const CLIENT_URL = process.env.CLIENT_URL;
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 app.use(cors(
     {
         origin: [CLIENT_URL],
@@ -53,6 +55,8 @@ const sessionOptions = {
         expires: Date.now() + 3 * 24 * 60 * 60 * 1000,
         maxAge: 1000 * 60 * 60 * 24 * 3, //3 days
         httpOnly: true,
+        sameSite: "none",
+        secure: true
     }
 }
 
