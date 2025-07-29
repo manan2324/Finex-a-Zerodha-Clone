@@ -79,11 +79,6 @@ app.use("/holdings", holdingRoute);
 app.use("/positions", positionRoute);
 app.use("/", passwordResetRoute);
 
-app.get("/debug-session", (req, res) => {
-  req.session.test = "working";
-  res.json({ message: "Session set" });
-});
-
 app.get("/", (req, res) => {
     res.send("Hello");
 });
