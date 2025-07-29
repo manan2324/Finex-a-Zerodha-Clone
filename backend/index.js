@@ -1,3 +1,5 @@
+// backend/index.js
+
 if (process.env.NODE_ENV != "production") {
     require("dotenv").config();
 }
@@ -10,7 +12,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
-const LocalStratagy = require("passport-local");
+const LocalStrategy = require("passport-local");
 const MongoStore = require("connect-mongo");
 
 const authRoute = require("./routes/authRoute");
@@ -25,28 +27,27 @@ const PORT = process.env.PORT || 3002;
 const MONGO_URL = process.env.MONGO_URL;
 const CLIENT_URL = process.env.CLIENT_URL;
 
-app.use(cors(
-    {
-        origin: [CLIENT_URL],
-        methods: ["GET", "POST", "PUT", "DELETE"],
-        credentials: true,
-    }
-));
+app.set("trust proxy", 1);
+
+// Correct CORS setup
+app.use(cors({
+    origin: [CLIENT_URL],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+}));
 
 async function main() {
     mongoose.connect(MONGO_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-    })
+    });
 }
 
 main()
     .then(() => console.log("MongoDB is connected successfully"))
     .catch((err) => console.error(err));
 
-main()
-
-//Middlewares
+// Middlewares
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -65,23 +66,25 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: false,
     cookie: {
-        expires: Date.now() + 3 * 24 * 60 * 60 * 1000,
-        maxAge: 1000 * 60 * 60 * 24 * 3, //3 days
+        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        maxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
         httpOnly: true,
+        sameSite: "none", 
+        secure: true      
     }
-}
+};
 
-//session middleware
+// Session middleware
 app.use(session(sessionOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 
-//passport config
-passport.use(new LocalStratagy(User.authenticate()));
+// Passport config
+passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-//routes
+// Routes
 app.use("/", authRoute);
 app.use("/orders", orderRoute);
 app.use("/holdings", holdingRoute);
