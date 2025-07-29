@@ -12,12 +12,12 @@ module.exports.Signup = async (req, res, next) => {
         return res.status(400).json({ success: false, message: err.message });
       }
 
-      req.login(user, (err) => {
+      req.logIn(user, (err) => {
         if (err) return next(err);
         return res.status(201).json({
           success: true,
           message: "User registered and logged in successfully",
-          user: user,
+          user,
         });
       });
     });
@@ -35,12 +35,12 @@ module.exports.Login = async (req, res, next) => {
       return res.status(400).json({ success: false, message: "Invalid credentials" });
     }
 
-    req.login(user, (err) => {
+    req.logIn(user, (err) => {
       if (err) return next(err);
       return res.status(200).json({
         success: true,
         message: "User logged in successfully",
-        user: user,
+        user,
       });
     });
   })(req, res, next);

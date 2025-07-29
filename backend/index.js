@@ -64,10 +64,10 @@ store.on("error", () => {
 
 //session middleware
 app.use(session(sessionOptions));
-
-//passport config
 app.use(passport.initialize());
 app.use(passport.session());
+
+//passport config
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
