@@ -136,21 +136,17 @@ export default function SignIn(props) {
     }
 
     try {
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/login`,
-        {
-          ...inputValue,
-        },
-        { withCredentials: true }
-      );
-      const { message, success, user } = data;
-      if (success) {
-        localStorage.setItem("userId", user._id);
-        handleSuccess(message);
-        navigate("/", { replace: true ,state: { justLoggedIn: true } });
-      } else {
-        handleError(message);
-      }
+      axios.get(`${process.env.REACT_APP_BACKEND_URL}/debug-session`, {
+        withCredentials: true
+      });
+      // const { message, success, user } = data;
+      // if (success) {
+      //   localStorage.setItem("userId", user._id);
+      //   handleSuccess(message);
+      //   navigate("/", { replace: true, state: { justLoggedIn: true } });
+      // } else {
+      //   handleError(message);
+      // }
     } catch (error) {
       console.log("Login error: ", error);
       handleError("Login failed. Please try again.");
