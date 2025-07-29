@@ -117,23 +117,23 @@ export default function SignIn(props) {
   };
 
   const handleSubmit = async (evt) => {
-    evt.preventDefault();
-    setLoading(true);
+    // evt.preventDefault();
+    // setLoading(true);
 
-    const trimmedEmail = inputValue.email.trim();
-    const trimmedPassword = inputValue.password.trim();
+    // const trimmedEmail = inputValue.email.trim();
+    // const trimmedPassword = inputValue.password.trim();
 
-    if (!trimmedEmail || !/\S+@\S+\.\S+/.test(trimmedEmail)) {
-      handleError("Please enter a valid email address.");
-      setLoading(false);
-      return;
-    }
+    // if (!trimmedEmail || !/\S+@\S+\.\S+/.test(trimmedEmail)) {
+    //   handleError("Please enter a valid email address.");
+    //   setLoading(false);
+    //   return;
+    // }
 
-    if (!trimmedPassword || trimmedPassword.length < 6) {
-      handleError("Password must be at least 6 characters long.");
-      setLoading(false);
-      return;
-    }
+    // if (!trimmedPassword || trimmedPassword.length < 6) {
+    //   handleError("Password must be at least 6 characters long.");
+    //   setLoading(false);
+    //   return;
+    // }
 
     try {
       axios.get(`${process.env.REACT_APP_BACKEND_URL}/debug-session`, {
@@ -151,12 +151,12 @@ export default function SignIn(props) {
       console.log("Login error: ", error);
       handleError("Login failed. Please try again.");
     }
-    setInputValue({
-      ...inputValue,
-      email: "",
-      password: "",
-    });
-    setLoading(false);
+    // setInputValue({
+    //   ...inputValue,
+    //   email: "",
+    //   password: "",
+    // });
+    // setLoading(false);
   };
 
   return (
