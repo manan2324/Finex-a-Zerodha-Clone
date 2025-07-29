@@ -136,9 +136,6 @@ export default function SignIn(props) {
     }
 
     try {
-      await axios.get(`${process.env.REACT_APP_BACKEND_URL}/debug-session`, {
-        withCredentials: true
-      });
       const { data } = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/login`,
         {
@@ -154,6 +151,9 @@ export default function SignIn(props) {
       } else {
         handleError(message);
       }
+      await axios.get(`${process.env.REACT_APP_BACKEND_URL}/debug-session`, {
+        withCredentials: true
+      });
     } catch (error) {
       console.log("Login error: ", error);
       handleError("Login failed. Please try again.");
