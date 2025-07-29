@@ -17,7 +17,7 @@ module.exports.Signup = async (req, res, next) => {
         return res.status(201).json({
           success: true,
           message: "User registered and logged in successfully",
-          user: { email: user.email, username: user.username },
+          user: user,
         });
       });
     });
@@ -40,7 +40,7 @@ module.exports.Login = async (req, res, next) => {
       return res.status(200).json({
         success: true,
         message: "User logged in successfully",
-        user: { email: user.email, username: user.username },
+        user: user,
       });
     });
   })(req, res, next);
@@ -49,7 +49,17 @@ module.exports.Login = async (req, res, next) => {
 module.exports.Logout = async (req, res) => {
   req.logout(err => {
     if (err) return res.status(500).json({ message: "Error logging out" });
-    res.clearCookie("connect.sid");
-    res.status(200).json({ success: true, message: "Logged out successfully" });
-  })
+    
+    req.session.destroy(() => {
+      res.clearCookie("connect.sid");
+      return res.status(200).json({ message: "Logout successful" });
+    });
+  });
+}
+
+module.exports.Verify = (req, res) => {
+  res.status(200).json({
+    status: true,
+    user: req.user.username
+  });
 }

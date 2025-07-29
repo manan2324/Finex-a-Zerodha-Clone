@@ -28,12 +28,13 @@ function ForgotPassword({ open, handleClose }) {
   const handleMouseDownPassword = (event) => event.preventDefault();
   const handleMouseUpPassword = (event) => event.preventDefault();
 
-  const handleSendCode = async () => {
+  const handleSendCode = async (e) => {
+    e.preventDefault();
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
       setMessage("Please enter a valid email.");
       return;
     }
-
+    
     setLoading(true);
     try {
       await axios.post(`${process.env.REACT_APP_BACKEND_URL}/forgot-password`, { email });
@@ -45,7 +46,8 @@ function ForgotPassword({ open, handleClose }) {
     setLoading(false);
   };
 
-  const handleVerifyCode = async () => {
+  const handleVerifyCode = async (e) => {
+    e.preventDefault();
     if (!code || code.length !== 4) {
       setMessage("Please enter a 4-digit code.");
       return;
@@ -63,6 +65,7 @@ function ForgotPassword({ open, handleClose }) {
   };
 
   const handleResetPassword = async (e) => {
+    e.preventDefault();
     if (!newPassword || newPassword.length < 6) {
       setMessage("Password must be at least 6 characters.");
       return;
@@ -173,21 +176,21 @@ function ForgotPassword({ open, handleClose }) {
         <Button onClick={handleClose}>Cancel</Button>
 
         {step === 1 && (
-          <Button variant="contained" onClick={handleSendCode} disabled={loading}>
+          <Button variant="contained" onClick={handleSendCode}>
             Send Code
-            {loading && <CircularProgress size={20} sx={{ ml: 1 }} />}
+            {loading && <CircularProgress color='inherit' size={20} sx={{ ml: 1 }} />}
           </Button>
         )}
         {step === 2 && (
-          <Button variant="contained" onClick={handleVerifyCode} disabled={loading}>
+          <Button variant="contained" onClick={handleVerifyCode}>
             Verify
-            {loading && <CircularProgress size={20} sx={{ ml: 1 }} />}
+            {loading && <CircularProgress color='inherit' size={20} sx={{ ml: 1 }} />}
           </Button>
         )}
         {step === 3 && (
-          <Button variant="contained" onClick={handleResetPassword} disabled={loading}>
+          <Button variant="contained" onClick={handleResetPassword}>
             Reset
-            {loading && <CircularProgress size={20} sx={{ ml: 1 }} />}
+            {loading && <CircularProgress color='inherit' size={20} sx={{ ml: 1 }} />}
           </Button>
         )}
       </DialogActions>

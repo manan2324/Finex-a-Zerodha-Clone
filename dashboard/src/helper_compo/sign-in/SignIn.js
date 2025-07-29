@@ -165,6 +165,7 @@ export default function SignIn(props) {
 
   return (
     <AppTheme {...props}>
+      <title>Finex - Login</title>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">

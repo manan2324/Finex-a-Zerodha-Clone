@@ -36,24 +36,33 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-//session middlewares
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        store: MongoStore.create({
-            mongoUrl: MONGO_URL,
-            collectionName: "sessions"
-        }),
-        cookie: {
-            maxAge: 1000 * 60 * 60 * 24 * 3, //3 days
-            httpOnly: true,
-            secure: false,
-            sameSite: "none"
-        }
-    })
-);
+const store = MongoStore.create({
+    mongoUrl: MONGO_URL,
+    crypto: {
+        secret: process.env.SESSION_SECRET
+    },
+    touchAfter: 3600 * 24
+});
+
+const sessionOptions = {
+    store,
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: Date.now() + 3 * 24 * 60 * 60 * 1000,
+        maxAge: 1000 * 60 * 60 * 24 * 3, //3 days
+        httpOnly: true,
+        secure: false,
+    }
+}
+
+store.on("error", () => {
+    console.log("ERROR in MONGO SESSION STORE", err);
+})
+
+//session middleware
+app.use(session(sessionOptions));
 
 //passport config
 app.use(passport.initialize());
@@ -75,13 +84,13 @@ app.get("/", (req, res) => {
 
 async function main() {
     mongoose.connect(MONGO_URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
 }
 
 main()
-    .then(() => console.log("MongoDB is  connected successfully"))
+    .then(() => console.log("MongoDB is connected successfully"))
     .catch((err) => console.error(err));
 
 main()

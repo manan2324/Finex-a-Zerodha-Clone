@@ -38,10 +38,9 @@ const Home = () => {
   useEffect(() => {
     const verifySession = async () => {
       try {
-        const { data } = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/`,
-          {},
-          { withCredentials: true }
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/verify`, 
+          {withCredentials: true}
         );
 
         const { status, user } = data;
