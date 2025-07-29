@@ -117,46 +117,53 @@ export default function SignIn(props) {
   };
 
   const handleSubmit = async (evt) => {
-    // evt.preventDefault();
-    // setLoading(true);
+    evt.preventDefault();
+    setLoading(true);
 
-    // const trimmedEmail = inputValue.email.trim();
-    // const trimmedPassword = inputValue.password.trim();
+    const trimmedEmail = inputValue.email.trim();
+    const trimmedPassword = inputValue.password.trim();
 
-    // if (!trimmedEmail || !/\S+@\S+\.\S+/.test(trimmedEmail)) {
-    //   handleError("Please enter a valid email address.");
-    //   setLoading(false);
-    //   return;
-    // }
+    if (!trimmedEmail || !/\S+@\S+\.\S+/.test(trimmedEmail)) {
+      handleError("Please enter a valid email address.");
+      setLoading(false);
+      return;
+    }
 
-    // if (!trimmedPassword || trimmedPassword.length < 6) {
-    //   handleError("Password must be at least 6 characters long.");
-    //   setLoading(false);
-    //   return;
-    // }
+    if (!trimmedPassword || trimmedPassword.length < 6) {
+      handleError("Password must be at least 6 characters long.");
+      setLoading(false);
+      return;
+    }
 
     try {
-      axios.get(`${process.env.REACT_APP_BACKEND_URL}/debug-session`, {
+      await axios.get(`${process.env.REACT_APP_BACKEND_URL}/debug-session`, {
         withCredentials: true
       });
-      // const { message, success, user } = data;
-      // if (success) {
-      //   localStorage.setItem("userId", user._id);
-      //   handleSuccess(message);
-      //   navigate("/", { replace: true, state: { justLoggedIn: true } });
-      // } else {
-      //   handleError(message);
-      // }
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/login`,
+        {
+          ...inputValue,
+        },
+        { withCredentials: true }
+      );
+      const { message, success, user } = data;
+      if (success) {
+        localStorage.setItem("userId", user._id);
+        handleSuccess(message);
+        navigate("/", { replace: true, state: { justLoggedIn: true } });
+      } else {
+        handleError(message);
+      }
     } catch (error) {
       console.log("Login error: ", error);
       handleError("Login failed. Please try again.");
     }
-    // setInputValue({
-    //   ...inputValue,
-    //   email: "",
-    //   password: "",
-    // });
-    // setLoading(false);
+    setInputValue({
+      ...inputValue,
+      email: "",
+      password: "",
+    });
+    setLoading(false);
   };
 
   return (
