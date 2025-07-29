@@ -43,7 +43,7 @@ function Universe() {
   return (
     <div className="container mt-5">
       <div className="text-center">
-        <h1>The Zerodha Universe</h1>
+        <h1>The Finex Universe</h1>
         <p className="text-muted">
           Extend your trading and investment experience even further with our partner platforms.
         </p>
@@ -64,7 +64,7 @@ function Universe() {
       </div>
 
       <div className="d-flex justify-content-center mt-4 mb-5">
-        <a href="/signup" className="btn btn-primary px-4 py-2 fs-5">
+        <a href="https://finex-dashboard.vercel.app" className="btn btn-primary px-4 py-2 fs-5">
           Signup Now
         </a>
       </div>

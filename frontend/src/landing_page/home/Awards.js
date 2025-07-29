@@ -15,7 +15,7 @@ function Awards() {
                 <div className="col-12 col-md-6 p-4 p-md-5 mt-4 mt-md-0">
                     <h2 className="fs-2 fs-md-1 text-center mb-2">Largest stock broker in India</h2>
                     <p className="mb-4">
-                        2+ million Zerodha clients contribute to over 15% of all retail
+                        2+ million Finex clients contribute to over 15% of all retail
                         order volumes in India daily by trading and investing in:
                     </p>
 

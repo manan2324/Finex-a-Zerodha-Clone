@@ -6,7 +6,7 @@ function OpenAccount() {
         <div className="container py-5 mb-5">
             <div className="row justify-content-center text-center">
                 <div className="col-12 col-md-8">
-                    <h2 className="fs-2 mt-4 mb-3 account-heading">Open a Zerodha account</h2>
+                    <h2 className="fs-2 mt-4 mb-3 account-heading">Open a Finex account</h2>
                     <p className="text-muted mb-4">
                         Modern platforms and apps, ₹0 investments, and flat ₹20 intraday and
                         F&O trades.

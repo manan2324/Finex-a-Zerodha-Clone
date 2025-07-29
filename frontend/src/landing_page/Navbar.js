@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
     return (
@@ -7,14 +8,12 @@ function Navbar() {
             style={{ backgroundColor: "#FFF" }}
         >
             <div className="container p-2">
-                <a className="navbar-brand" href="/">
-                    <img
-                        src="media/images/logo.svg"
-                        className="img-fluid"
-                        style={{ maxWidth: "125px", height: "auto" }}
-                        alt="Logo"
-                    />
-                </a>
+                <div className="logo">
+                    <Link to="/" className="logo-link">
+                        <img src='logo.png' style={{ width: "35px" }} alt="Logo" />
+                        <span>Finex</span>
+                    </Link>
+                </div>
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -30,7 +29,7 @@ function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0 gap-3">
                         <li className="nav-item">
-                            <a className="nav-link active" href="https://finex-dashboard.vercel.app">Go to Dashboard</a>
+                            <a className="nav-link active" href="https://finex-dashboard.vercel.app">Dashboard</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link active" href="/about">About</a>

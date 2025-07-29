@@ -27,9 +27,9 @@ function Team() {
 
                 <div className="col-12 col-md-6 px-4">
                     <p>
-                        Nithin bootstrapped and founded Zerodha in 2010 to overcome the
+                        Nithin bootstrapped and founded Finex in 2010 to overcome the
                         hurdles he faced during his decade-long stint as a trader. Today,
-                        Zerodha has changed the landscape of the Indian broking industry.
+                        Finex has changed the landscape of the Indian broking industry.
                     </p>
                     <p>
                         He is a member of the SEBI Secondary Market Advisory Committee

@@ -12,6 +12,18 @@ code {
     monospace;
 }
 
+.logo {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #3498db;
+}
+
 .nav-link {
   margin-left: 40px;
 }
@@ -56,6 +68,10 @@ footer a:hover {
 @media (max-width: 992px) {
   #navbarSupportedContent {
     margin-top: 1rem;
+  }
+
+  #supportWrapper {
+    margin: auto;
   }
 }
 

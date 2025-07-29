@@ -16,7 +16,7 @@ function Hero() {
                         Online platform to invest in stocks, derivatives, mutual funds, and more.
                     </p>
                     <div className="d-flex justify-content-center">
-                        <Link to="http://localhost:3000" target="_blank" className="btn btn-primary btn-lg mt-3 px-4">
+                        <Link to="https://finex-dashboard.vercel.app" target="_blank" className="btn btn-primary btn-lg mt-3 px-4">
                             Signup Now
                         </Link>
                     </div>
