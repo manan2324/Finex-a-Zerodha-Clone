@@ -16,7 +16,7 @@ module.exports.Signup = async (req, res, next) => {
         if (err) return next(err);
         return res.status(201).json({
           success: true,
-          message: "User registered and logged in successfully",
+          message: "User registered successfully",
           user,
         });
       });
@@ -29,6 +29,7 @@ module.exports.Signup = async (req, res, next) => {
 };
 
 module.exports.Login = async (req, res, next) => {
+  req.body.username = req.body.email;
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
     if (!user) {
