@@ -53,8 +53,6 @@ const sessionOptions = {
         expires: Date.now() + 3 * 24 * 60 * 60 * 1000,
         maxAge: 1000 * 60 * 60 * 24 * 3, //3 days
         httpOnly: true,
-        secure: true,
-        sameSite: "none"
     }
 }
 
