@@ -18,7 +18,7 @@ Finex/
 
 ## 🚀 Features
 
-- JWT-based Authentication with Cookies
+- Session-based Authentication using Passport.js and Cookies
 - Modular backend using Express + Mongoose
 - Secure login and registration flow
 - Role-based access protection
@@ -30,14 +30,14 @@ Finex/
 
 ## 📦 Tech Stack
 
-| Layer      | Technology                        |
-|------------|-----------------------------------|
-| Frontend   | React, JSX, CSS                   |
-| Dashboard  | React, React Router, Axios        |
-| Backend    | Node.js, Express, Mongoose, JWT   |
-| Database   | MongoDB (with Mongoose ODM)       |
-| Styling    | Custom CSS, Responsive Design     |
-| Auth       | JWT + Cookie-based session        |
+| Layer      | Technology                                 |
+|------------|--------------------------------------------|
+| Frontend   | React, JSX, CSS                            |
+| Dashboard  | React, React Router, Axios                 |
+| Backend    | Node.js, Express, Mongoose                 |
+| Database   | MongoDB (with Mongoose ODM)                |
+| Styling    | Custom CSS, Bootsrap, Responsive Design    |
+| Auth       | Passport.js + Express-session (Cookie-based) |
 
 ---
 
@@ -63,8 +63,9 @@ Create a `.env` file in `backend/`:
 
 ```env
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
+MONGO_URL=your_mongodb_connection_string
+SESSION_SECRET=your_session_secret
+CLIENT_URL=https://your_frontend_app_url.com
 ```
 
 Start the backend:
@@ -112,8 +113,5 @@ Each subproject manages its own environment:
 - `frontend/.env` – Public site config
 
 ---
-
-
-## 🙌 Credits
 
 Developed by [Manan Patel](https://github.com/manan2324) — a full-stack trading simulation platform for learning and demo purposes.
