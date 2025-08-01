@@ -1,6 +1,9 @@
 # Finex: A Zerodha Clone 🧾📈
 
-**Finex** is a full-stack trading platform inspired by Zerodha, built using **React**, **Node.js**, and **MongoDB**. The project is modular, featuring a public-facing site, a secure user dashboard, and a powerful backend API.
+![MIT License](https://img.shields.io/badge/License-MIT-green.svg)
+
+**Finex** is a modular, full-stack trading simulation platform inspired by [Zerodha](https://zerodha.com/). Built with **React**, **Node.js**, and **MongoDB**, it offers a realistic dashboard, secure authentication, and a responsive public website.  
+**For demo/learning purposes only. Not production use!**
 
 ---
 
@@ -8,10 +11,10 @@
 
 ```
 Finex/
-├── backend/        # Express.js backend (API, auth, DB)
-├── dashboard/      # Authenticated trading dashboard (React)
-├── frontend/       # Public-facing landing page (React)
-└── README.md       # You're reading this!
+├── backend/        # Express.js REST API server (auth, trading logic)
+├── dashboard/      #  Authenticated user dashboard (React SPA)
+├── frontend/       # Public landing site (React SPA)
+└── README.md       # Project documentation
 ```
 
 ---
@@ -114,4 +117,14 @@ Each subproject manages its own environment:
 
 ---
 
-Developed by [Manan Patel](https://github.com/manan2324) — a full-stack trading simulation platform for learning and demo purposes.
+## 🤝 Contributing
+
+Contributions, bug reports, and suggestions are welcome! 
+
+## ⚠️ Disclaimer
+
+This project is for educational and demonstration purposes only. **Do not use for live trading or production.**
+
+## 📄 License
+
+Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.
