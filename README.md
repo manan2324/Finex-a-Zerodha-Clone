@@ -1,7 +1,5 @@
 # Finex: A Zerodha Clone 🧾📈
 
-![MIT License](https://img.shields.io/badge/License-MIT-green.svg)
-
 **Finex** is a modular, full-stack trading simulation platform inspired by [Zerodha](https://zerodha.com/). Built with **React**, **Node.js**, and **MongoDB**, it offers a realistic dashboard, secure authentication, and a responsive public website.  
 **For demo/learning purposes only. Not production use!**
 
@@ -121,10 +119,8 @@ Each subproject manages its own environment:
 
 Contributions, bug reports, and suggestions are welcome! 
 
+---
+
 ## ⚠️ Disclaimer
 
 This project is for educational and demonstration purposes only. **Do not use for live trading or production.**
-
-## 📄 License
-
-Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.
