@@ -18,9 +18,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import CircularProgress from '@mui/material/CircularProgress';
+import { GoogleIcon } from "./components/CustomIcons"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import ColorModeSelect from '../shared-theme/ColorModeSelect';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -138,8 +140,9 @@ export default function SignUp(props) {
         },
         { withCredentials: true }
       );
-      const { success, message, user } = data;
+      const { success, message } = data;
       if (success) {
+        const { user } = data;
         localStorage.setItem("userId", user._id);
         handleSuccess(message);
         navigate("/", { replace: true });
@@ -164,6 +167,7 @@ export default function SignUp(props) {
       <title>Finex - Signup</title>
       <CssBaseline enableColorScheme />
       <SignUpContainer direction="column" justifyContent="space-between">
+        <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
         <Card variant="outlined">
           <img src='logo.png' style={{ width: "40px" }} alt='Logo' />
           <Typography
@@ -243,10 +247,9 @@ export default function SignUp(props) {
               fullWidth
               variant="contained"
               disabled={loading}
-              style={{ color: "white" }}
             >
               {loading ? (
-                <CircularProgress size={24} color='inherit' />
+                <CircularProgress size={24} color='primary' />
               ) : (
                 "Sign up"
               )}
@@ -256,22 +259,16 @@ export default function SignUp(props) {
             <Typography sx={{ color: 'text.secondary' }}>or</Typography>
           </Divider>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            {/* <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign up with Google')}
-              // startIcon={<GoogleIcon />}
-            >
-              Sign up with Google
-            </Button>
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert('Sign up with Facebook')}
-              // startIcon={<FacebookIcon />}
+              onClick={() => {
+                window.location.href = `${process.env.REACT_APP_BACKEND_URL}/auth/google`;
+              }}
+              startIcon={<GoogleIcon />}
             >
-              Sign up with Facebook
-            </Button> */}
+              Sign up with Google
+            </Button>
             <Typography sx={{ textAlign: 'center' }}>
               Already have an account?{' '}
               <Link component={RouterLink} to={"/login"} variant='body2'>

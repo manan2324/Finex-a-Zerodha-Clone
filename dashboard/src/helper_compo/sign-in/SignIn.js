@@ -21,6 +21,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import CircularProgress from '@mui/material/CircularProgress';
+import ColorModeSelect from "../shared-theme/ColorModeSelect";
+import { GoogleIcon } from "./components/CustomIcons"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -143,8 +145,10 @@ export default function SignIn(props) {
         },
         { withCredentials: true }
       );
-      const { message, success, user } = data;
+      console.log(data);
+      const { success, message } = data;
       if (success) {
+        const { user } = data;
         localStorage.setItem("userId", user._id);
         handleSuccess(message);
         navigate("/", { replace: true, state: { justLoggedIn: true } });
@@ -168,6 +172,7 @@ export default function SignIn(props) {
       <title>Finex - Login</title>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
+        <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
         <Card variant="outlined">
           <img src='logo.png' style={{ width: "40px" }} alt='Logo' />
           <Typography
@@ -244,10 +249,9 @@ export default function SignIn(props) {
               fullWidth
               variant="contained"
               disabled={loading}
-              style={{ color: "white" }}
             >
               {loading ? (
-                <CircularProgress size={24} color='inherit' />
+                <CircularProgress size={24} color='primary' />
               ) : (
                 "Login"
               )}
@@ -264,22 +268,16 @@ export default function SignIn(props) {
           </Box>
           <Divider>or</Divider>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            {/* <Button
+            <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert('Sign in with Google')}
+              onClick={() => {
+                window.location.href = `${process.env.REACT_APP_BACKEND_URL}/auth/google`;
+              }}
               startIcon={<GoogleIcon />}
             >
               Sign in with Google
             </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign in with Facebook')}
-              startIcon={<FacebookIcon />}
-            >
-              Sign in with Facebook
-            </Button> */}
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <Link component={RouterLink} to="/signup" variant='body2'>

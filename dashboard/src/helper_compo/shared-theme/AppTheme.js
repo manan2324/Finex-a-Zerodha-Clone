@@ -19,9 +19,7 @@ function AppTheme(props) {
             colorSchemeSelector: 'data-mui-color-scheme',
             cssVarPrefix: 'template',
           },
-          colorSchemes: {
-            light: colorSchemes.light,
-          }, 
+          colorSchemes, 
           typography,
           shadows,
           shape,

@@ -15,9 +15,8 @@ const Home = () => {
   const { isSidebarOpen, toggleSidebar } = useContext(GeneralContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const [username, setUsername] = useState("");
 
-  // This effect adds a listener to close the sidebar when clicking outside of it on mobile
+  // Closes sidebar on mobile when clicking outside
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (isSidebarOpen && !event.target.closest('.sidebar') && !event.target.closest('.mobile-menu-btn')) {
@@ -39,31 +38,49 @@ const Home = () => {
     const verifySession = async () => {
       try {
         const { data } = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/verify`, 
-          {withCredentials: true}
+          `${process.env.REACT_APP_BACKEND_URL}/verify`,
+          { withCredentials: true }
         );
 
         const { status, user } = data;
         if (!status) {
           navigate("/login");
         } else {
-          setUsername(user);
+          //Store userId in localStorage
+          if (user && user._id) {
+            localStorage.setItem("userId", user._id);
+          }
 
-          if (location.state?.justLoggedIn) {
-            toast(`Hello ${user}`, {
-              position: "top-right",
-            });
-            // Remove the justLoggedIn flag after showing the toast
-            navigate(location.pathname, { replace: true, state: {} });
+          // Check for Google or local login success indicator
+          const params = new URLSearchParams(location.search);
+          const urlJustLoggedIn = params.get("justLoggedIn");
+          const stateJustLoggedIn = location.state?.justLoggedIn;
+
+          if (urlJustLoggedIn || stateJustLoggedIn) {
+            toast.success(
+              `Hello ${user.username}!`,
+              { position: "top-right" }
+            );
+
+            // Clear the justLoggedIn flag so toast only shows once
+            if (urlJustLoggedIn) {
+              // Remove from URL without reloading the page
+              params.delete("justLoggedIn");
+              navigate({
+                pathname: location.pathname,
+                search: params.toString(),
+              }, { replace: true });
+            } else {
+              navigate(location.pathname, { replace: true, state: {} });
+            }
           }
         }
       } catch (err) {
-        console.log("Verification failed:", err);
         navigate("/login");
       }
     };
     verifySession();
-  }, [navigate, location.state]);
+  }, [navigate, location.search, location.state]);
 
   const Logout = async () => {
     try {

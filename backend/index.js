@@ -12,6 +12,7 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const MongoStore = require("connect-mongo");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 const authRoute = require("./routes/authRoute");
 const orderRoute = require("./routes/orderRoute");
@@ -67,8 +68,8 @@ const sessionOptions = {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
         maxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
         httpOnly: true,
-        sameSite: "none", 
-        secure: true      
+        secure: true,
+        sameSite: "none"
     }
 };
 
@@ -78,6 +79,29 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Passport config
+// Google OAuth Strategy
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: `${process.env.BACKEND_URL}/auth/google/callback`
+}, async (accessToken, refreshToken, profile, done) => {
+    try {
+        // Find user by Google ID or email, else create new user
+        let user = await User.findOne({ googleId: profile.id });
+        if (!user) {
+            user = new User({
+                googleId: profile.id,
+                username: profile.displayName,
+                email: profile.emails[0].value
+            });
+            await user.save();
+        }
+        return done(null, user);
+    } catch (error) {
+        return done(error, null);
+    }
+}));
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -88,6 +112,20 @@ app.use("/orders", orderRoute);
 app.use("/holdings", holdingRoute);
 app.use("/positions", positionRoute);
 app.use("/", passwordResetRoute);
+
+app.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', {
+        failureRedirect: '/login',
+        session: true
+    }),
+    (req, res) => {
+        res.redirect(`${CLIENT_URL}/?justLoggedIn=true`); // After success, redirect home
+    }
+);
 
 app.get("/", (req, res) => {
     res.send("Hello");

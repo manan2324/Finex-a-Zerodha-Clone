@@ -19,7 +19,6 @@ module.exports.newOrder = async (req, res) => {
         user.orders.push(newOrder);
 
         let holding = await Holding.findOne({ name: name, user: userId });
-
         if (mode.toUpperCase() === "BUY") {
             if (holding) {
                 // Update qty and avg price
@@ -57,7 +56,6 @@ module.exports.newOrder = async (req, res) => {
         }
 
         await user.save();
-
         res.send("Order saved to user and holdings updated");
     } catch (err) {
         console.log(err);

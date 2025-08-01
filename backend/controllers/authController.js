@@ -9,7 +9,7 @@ module.exports.Signup = async (req, res, next) => {
 
     User.register(newUser, password, (err, user) => {
       if (err) {
-        return res.status(400).json({ success: false, message: err.message });
+        return res.json({ success: false, message: "User already exists with this email" });
       }
 
       req.logIn(user, (err) => {
@@ -33,7 +33,7 @@ module.exports.Login = async (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
     if (!user) {
-      return res.status(400).json({ success: false, message: "Invalid credentials" });
+      return res.json({ success: false, message: "Invalid email or password" });
     }
 
     req.logIn(user, (err) => {
@@ -59,8 +59,12 @@ module.exports.Logout = async (req, res) => {
 }
 
 module.exports.Verify = (req, res) => {
-  res.status(200).json({
-    status: true,
-    user: req.user.username
-  });
+  if (req.user) {
+    res.status(200).json({
+      status: true,
+      user: req.user
+    });
+  } else {
+    res.status(200).json({ status: false });
+  }
 }

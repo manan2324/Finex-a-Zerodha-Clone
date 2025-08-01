@@ -11,6 +11,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Your username is required"],
     },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true, // Allows users who signed up locally to NOT have a googleId
+    },
     createdAt: {
         type: Date,
         default: new Date(),

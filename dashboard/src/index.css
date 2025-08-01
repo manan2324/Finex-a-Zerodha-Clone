@@ -17,6 +17,21 @@
   --shadow-color: rgba(44, 62, 80, 0.1);
 }
 
+.dark-theme {
+  --primary-color: #90caf9;
+  --primary-hover: #5e92f3;
+  --secondary-color: #222b36;
+  --success-color: #27ae60;
+  --danger-color: #e57373;
+  --warning-color: #ffc107;
+  --bg-color: #181c24;
+  --card-bg-color: #222b36;
+  --text-primary: #f3f6f9;
+  --text-secondary: #b0bac9;
+  --border-color: #333e4b;
+  --shadow-color: rgba(16, 24, 40, 0.5);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -131,6 +146,13 @@ ul {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.topbar-right-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 1rem;
 }
 
 .logout-btn {

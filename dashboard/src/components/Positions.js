@@ -3,12 +3,16 @@ import axios from "axios";
 import { GeneralContext } from "./GeneralContext";
 
 const Positions = () => {
-  const [allPostions, setAllPostions] = useState([]);
+  const [allPostions, setAllPositions] = useState([]);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/positions/allPositions`).then((res) => {
-      setAllPostions(res.data);
-    });
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/positions/allPositions`)
+      .then((res) => {
+        setAllPositions(res.data);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch positions:", err);
+      });
   }, []);
 
   const { getAiAnalysis } = useContext(GeneralContext);

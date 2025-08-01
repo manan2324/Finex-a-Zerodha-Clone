@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-
 const { positionsSchema } = require("../schemas/PositionsSchema");
 
-module.exports = mongoose.model("Position", positionsSchema);
+const Position = mongoose.model("Position", positionsSchema);
+
+module.exports = Position;
