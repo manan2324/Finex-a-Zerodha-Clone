@@ -13,7 +13,8 @@ function OpenAccount() {
                     </p>
 
                     <Link
-                        to="https://finex-dashboard.vercel.app"
+                        to="https://finex-dashboard.vercel.app/login"
+                        target="_blank"
                         className="btn btn-primary btn-lg px-4"
                         style={{ maxWidth: "220px" }}
                     >
