@@ -15,6 +15,7 @@ const Home = () => {
   const { isSidebarOpen, toggleSidebar } = useContext(GeneralContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const [loading, setLoading] = useState(true);
 
   // Closes sidebar on mobile when clicking outside
   useEffect(() => {
@@ -74,8 +75,10 @@ const Home = () => {
               navigate(location.pathname, { replace: true, state: {} });
             }
           }
+          setLoading(false);
         }
       } catch (err) {
+        setLoading(false);
         navigate("/login");
       }
     };
@@ -97,6 +100,14 @@ const Home = () => {
       toast.error("Logout failed");
     }
   };
+
+  if (loading) {
+    return (
+      <div class="loader">
+        <div class="justify-content-center jimu-primary-loading"></div>
+      </div>
+    );
+  }
 
   return (
     <>
