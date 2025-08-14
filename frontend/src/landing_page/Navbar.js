@@ -29,19 +29,19 @@ function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0 gap-3">
                         <li className="nav-item">
-                            <a className="nav-link active" href="https://finex-dashboard.vercel.app">Dashboard</a>
+                            <Link className="nav-link active" to="https://finex-dashboard.vercel.app">Dashboard</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link active" href="/about">About</a>
+                            <Link className="nav-link active" to="/about">About</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link active" href="/product">Product</a>
+                            <Link className="nav-link active" to="/product">Product</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link active" href="/pricing">Pricing</a>
+                            <Link className="nav-link active" to="/pricing">Pricing</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link active" href="/support">Support</a>
+                            <Link className="nav-link active" to="/support">Support</Link>
                         </li>
                     </ul>
                 </div>
