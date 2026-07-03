@@ -36,17 +36,34 @@ export const GeneralContextProvider = ({ children }) => {
     try {
       const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
       const payload = { contents: chatHistory };
-      const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+      let response;
+      let lastError;
 
-      if (!response.ok) {
-        throw new Error(`API call failed with status: ${response.status}`);
+      // Try up to 3 times to handle 429 errors
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+        response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          break;
+        } else if (response.status === 429) {
+          lastError = new Error(`429 Too Many Requests (Attempt ${attempt + 1})`);
+          // Wait before retrying (exponential backoff: 1s, 2s, 3s)
+          await new Promise(res => setTimeout(res, 1000 * (attempt + 1)));
+        } else {
+          throw new Error(`API call failed with status: ${response.status}`);
+        }
+      }
+
+      if (!response || !response.ok) {
+        throw lastError || new Error("API call failed after retries.");
       }
 
       const result = await response.json();

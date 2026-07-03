@@ -83,7 +83,7 @@ const Home = () => {
       }
     };
     verifySession();
-  }, [navigate, location.search, location.state]);
+  }, [navigate, location.search, location.state, location.pathname]);
 
   const Logout = async () => {
     try {

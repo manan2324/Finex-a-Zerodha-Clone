@@ -224,6 +224,7 @@ export default function SignUp(props) {
                 autoComplete="current-password"
                 autoFocus
                 variant="outlined"
+                value={password}
                 onChange={handleOnChange}
                 InputProps={{
                   endAdornment: (

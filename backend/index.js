@@ -68,8 +68,8 @@ const sessionOptions = {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
         maxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
         httpOnly: true,
-        secure: true,
-        sameSite: "none"
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
     }
 };
 
